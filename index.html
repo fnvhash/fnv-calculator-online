@@ -1,0 +1,183 @@
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="description" content="FNV Hash Calculator Online supporting
+      FNV-1 and FNV-1a in all bit sizes" />
+
+    <meta name="keywords"
+    content="FNV,Hash,Calculator,Online,FNV-1,FNV-1a,FNV1,FNV1a" />
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title> FNV Hash </title>
+
+    <script type="application/javascript">
+      var module = { }
+    </script>
+
+    <script type="application/javascript" src="onlinedemo.min.js"></script>
+
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-58056440-1', 'auto');
+      ga('send', 'pageview');
+    </script>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet"
+    href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css"
+    />
+
+    <!-- Optional theme -->
+    <link rel="stylesheet"
+    href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css"
+    />
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and
+      media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via
+      file:// -->
+    <!--[if lt IE 9]>
+      <script
+        src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script
+        src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <style media="screen" type="text/css">
+      .header {
+        padding-top: 60px;
+        padding-bottom: 10px;
+        font-family: monospace;
+        text-align: center;
+      }
+      html {
+        position: relative;
+        min-height: 100%;
+      }
+      body {
+        /* Margin bottom by footer height */
+        margin-bottom: 60px;
+      }
+      .footer {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        /* Set the fixed height of the footer here */
+        height: 60px;
+        background-color: #f5f5f5;
+        text-align: center;
+      }
+      .results {
+        min-height: 60px;
+        text-align: center;
+      }
+      .results .output {
+        font-family: monospace;
+        padding-top: 10px;
+      }
+      label {
+        font-family: monospace;
+        text-align: right;
+      }
+      .jumbotron {
+        padding: 20px 0 10px;
+      }
+      .form-horizontal {
+        padding-top: 25px;
+      }
+    </style>
+
+  </head>
+
+  <body onload="var i=document.getElementById('input_hex'); i.focus(); dostuff(); bitselected(64)">
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="http(s)://fnvhash.github.io/fnv-calculator-online">FNVHash Home</a>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container">
+      <h2 class="header">FNV Hash Calculator Online</h2>
+    </div>
+
+
+    <div class="container" style="text-align: center;">
+      <p>
+        Developers may enjoy using this online calculator to test or verify their
+        own results.
+      </p>
+    </div>
+
+    <div class="container">
+      <div class="row">
+        <div class="col-md-2">
+          <input type="radio" id="bits32" onclick="bitselected(32)" name="bits" value="32" /> 32 bits <br />
+            <input type="radio" id="bits64" onclick="bitselected(64)" name="bits" value="64" checked /> 64 bits <br />
+            <input type="radio" id="bits128" onclick="bitselected(128)" name="bits" value="128" /> 128 bits <br />
+            <input type="radio" id="bits256" onclick="bitselected(256)" name="bits" value="256" /> 256 bits <br />
+            <input type="radio" id="bits512" onclick="bitselected(512)" name="bits" value="512" /> 512 bits <br />
+            <input type="radio" id="bits1024" onclick="bitselected(1024)" name="bits" value="1024" /> 1024 bits
+        </div>
+
+        <div class="col-md-4">
+          <div class="row">
+
+            <form class="form-horizontal">
+              <div class="form-group">
+                <label for="input_hex" class="col-sm-3 control_label">Input Hex:</label>
+                <div class="col-sm-9">
+                  <input onpaste="handlePaste(event)" onkeydown="cancelit()" onkeypress="cancelit()" onkeyup="translateHexKeypress(event)" id="input_hex" size=90 tyle="font-family:monospace,monospace" spellcheck="false"></input>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="input_str" class="col-sm-3 control_label">Input ASCII:</label>
+                <div class="col-sm-9">
+                  <input onpaste="handleStringPaste(event)" onkeydown="cancelit2(event)" onkeypress="cancelit()" onkeyup="translateStringKeypress(event)" id="input_str" style="font-family:monospace,monospace" size=50 spellcheck="false">
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="col-md-1">&nbsp;</div>
+      </div>
+    </div>
+
+    <div>
+      <div class="container">
+        <div class="results">
+          <strong>FNV_1a</strong>
+          <div class="output">
+            <p id="output_hash_1a">
+            </p>
+          </div>
+        </div>
+        <div class="results">
+          <strong>FNV_1</strong>
+          <div class="output">
+            <p id="output_hash_1">
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="footer">
+      <div class="container">
+        For more information about the FNV hash, please see:
+        <a href="http://www.isthe.com/chongo/tech/comp/fnv/">
+          The FNV quick index
+        </a>
+      </div>
+      <div align=center> <span style="font-size:8px"><a href="https://github.com/fnvhash/fnv-calculator-online/issues">Found a bug? Report it here.</a></span></div>
+    </footer>
+  </body>
+</html>
