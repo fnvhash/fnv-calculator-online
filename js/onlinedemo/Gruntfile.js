@@ -1,6 +1,6 @@
 module.exports = function(grunt) {
 
-  srcglob =  ['jsbn.js', 'fnvhash.js', 'fnvtop.js', 'inputstringmodel.js', 'index.js']
+  srcglob =  ['fnv.js', 'biginteger.js', 'fnvtop.js', 'inputstringmodel.js', 'index.js']
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     concat: {

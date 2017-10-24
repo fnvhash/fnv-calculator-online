@@ -4,7 +4,7 @@ global.mustUpdateStr = false;
 global.inhibitHex = false;
 global.bitsize = 64;
 function printHash(bignum) {
-    var r = bignum.toRadix(16);
+    var r = bignum.toString(16);
     while (r.length < bitsize / 4) {
       r = '0' + r;
     }
@@ -31,7 +31,7 @@ global.cancelit = function(event) {
   return true;
 }
 
-var fnv = FNV();
+var myfnv = fnv(bitsize);
 function handlePaste(event) {
   var str = event.clipboardData.getData('text/plain');
   convertFromHexString(str);
@@ -46,7 +46,7 @@ function convertFromString(str) {
   tr.translateKeypress(27);
   for (var i = 0; i < str.length; ++i) {
     var c = new BigInteger(''+str.charCodeAt(i), 10);
-    var hex = c.toRadix(16);
+    var hex = c.toString(16);
     tr.translateKeypress(hex.charCodeAt(0));
     tr.translateKeypress(hex.charCodeAt(1));
   }
@@ -71,9 +71,10 @@ function updateDisplayFromHex() {
     document.getElementById("input_str").value = tr.toScalarString();
   }
   inhibitHex = false;
-  var h = fnv.hashFNV1aBuf(tr.toScalarArray(), bitsize);
+  var myfnv = fnv(bitsize);
+  var h = myfnv.sum1a(tr.toScalarArray());
   document.getElementById("output_hash_1a").innerHTML = printHash(h);
-  var h = fnv.hashFNV1Buf(tr.toScalarArray(), bitsize);
+  var h = myfnv.sum1(tr.toScalarArray());
   document.getElementById("output_hash_1").innerHTML = printHash(h);
 }
 global.handleStringPaste = function(event) {
